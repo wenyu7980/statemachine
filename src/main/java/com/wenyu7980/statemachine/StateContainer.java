@@ -20,11 +20,11 @@ package com.wenyu7980.statemachine;
  * @author:wenyu
  * @date:2019/12/26
  */
-public interface StateContainer<S> {
+public interface StateContainer {
     /**
      * 是否匹配
      * @param s
      * @return
      */
-    boolean match(final StateContainer<S> s);
+    boolean match(final StateContainer s);
 }
