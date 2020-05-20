@@ -10,8 +10,15 @@
 >
 > [有限状态自动机-守卫版](https://www.jianshu.com/p/97db3c14fb85)
 
-
-
+##### maven
+```xml
+<!-- https://mvnrepository.com/artifact/com.wenyu7980/statemachine -->
+<dependency>
+    <groupId>com.wenyu7980</groupId>
+    <artifactId>statemachine</artifactId>
+    <version>1.1.0</version>
+</dependency>
+```
 ### 状态机库结构
 
 #### 状态机
