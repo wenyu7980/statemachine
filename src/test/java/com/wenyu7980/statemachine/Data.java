@@ -12,7 +12,8 @@ public class Data {
         return state;
     }
 
-    public void setState(State state) {
+    public State setState(State state) {
         this.state = state;
+        return this.state;
     }
 }

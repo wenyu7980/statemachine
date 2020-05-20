@@ -24,7 +24,7 @@ import com.wenyu7980.statemachine.listener.StateMachineStateListener;
 import com.wenyu7980.statemachine.listener.StateMachineTransformListener;
 
 import java.util.*;
-import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +37,7 @@ public class StateMachine<T, S extends StateContainer, E> {
     /** 状态机列表 */
     private List<MachineContainer<T, S, E>> machineContainers = new ArrayList<>();
     /** 在状态数据中设定状态 */
-    private final BiConsumer<T, S> stateConsumer;
+    private final BiFunction<T, S, S> stateFunction;
     /** 状态迁移不存在异常 */
     private final StateMachineNotFoundSupplier<T, S, E, RuntimeException> notFoundException;
     /** 事件监听 */
@@ -52,12 +52,12 @@ public class StateMachine<T, S extends StateContainer, E> {
     /**
      *
      * @param name
-     * @param stateConsumer
+     * @param stateFunction
      */
-    public StateMachine(String name, BiConsumer<T, S> stateConsumer,
+    public StateMachine(String name, BiFunction<T, S, S> stateFunction,
             StateMachineNotFoundSupplier<T, S, E, RuntimeException> notFoundException) {
         this.name = name;
-        this.stateConsumer = stateConsumer;
+        this.stateFunction = stateFunction;
         this.notFoundException = notFoundException;
     }
 
@@ -195,8 +195,8 @@ public class StateMachine<T, S extends StateContainer, E> {
             throw new StateMachineTooManyException(this.name, state, event);
         }
         // 目标状态
-        final S target = matches.get(0).target;
-        if (!Objects.equals(state, target)) {
+        final S to = matches.get(0).target;
+        if (!Objects.equals(state, to)) {
             // 离开状态
             this.stateListeners.stream()
                     .filter(listener -> listener.exit() && listener.state()
@@ -204,7 +204,7 @@ public class StateMachine<T, S extends StateContainer, E> {
                     .forEach(listener -> listener.listener(t, event));
         }
         // 设定状态
-        this.stateConsumer.accept(t, target);
+        final S target = this.stateFunction.apply(t, to);
         // 事件触发后
         this.eventListeners.stream()
                 .filter(listener -> listener.post() && Objects
