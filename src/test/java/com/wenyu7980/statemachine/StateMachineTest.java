@@ -106,6 +106,7 @@ public class StateMachineTest {
                 .mock(StateMachineStateListener.class);
         when(exitState.exit()).thenReturn(true);
         when(exitState.state()).thenReturn(State.S1);
+        when(exitState.strict()).thenReturn(true);
         stateMachine.addStateListener(exitState);
         // 事件后监听
         StateMachineEventListener<Data, State, Event> postEvent = Mockito
@@ -124,6 +125,7 @@ public class StateMachineTest {
                 .mock(StateMachineStateListener.class);
         when(enterState.exit()).thenReturn(false);
         when(enterState.state()).thenReturn(State.S2);
+        when(enterState.strict()).thenReturn(true);
         stateMachine.addStateListener(enterState);
         // 状态机后监听
         StateMachineListener<Data, State, Event> postListener = Mockito
@@ -171,7 +173,7 @@ public class StateMachineTest {
                 .mock(StateMachineStateListener.class);
         when(exitState.exit()).thenReturn(true);
         when(exitState.state()).thenReturn(State.S1);
-        when(exitState.strict()).thenReturn(true);
+        when(exitState.strict()).thenReturn(false);
         stateMachine.addStateListener(exitState);
         // 事件后监听
         StateMachineEventListener<Data, State, Event> postEvent = Mockito
@@ -190,7 +192,7 @@ public class StateMachineTest {
                 .mock(StateMachineStateListener.class);
         when(enterState.exit()).thenReturn(false);
         when(enterState.state()).thenReturn(State.S1);
-        when(enterState.strict()).thenReturn(true);
+        when(enterState.strict()).thenReturn(false);
         stateMachine.addStateListener(enterState);
         // 状态机后监听
         StateMachineListener<Data, State, Event> postListener = Mockito
@@ -238,6 +240,7 @@ public class StateMachineTest {
                 .mock(StateMachineStateListener.class);
         when(exitState.exit()).thenReturn(true);
         when(exitState.state()).thenReturn(State.S1);
+        when(exitState.strict()).thenReturn(true);
         stateMachine.addStateListener(exitState);
         // 事件后监听
         StateMachineEventListener<Data, State, Event> postEvent = Mockito
@@ -256,6 +259,7 @@ public class StateMachineTest {
                 .mock(StateMachineStateListener.class);
         when(enterState.exit()).thenReturn(false);
         when(enterState.state()).thenReturn(State.S1);
+        when(enterState.strict()).thenReturn(true);
         stateMachine.addStateListener(enterState);
         // 状态机后监听
         StateMachineListener<Data, State, Event> postListener = Mockito

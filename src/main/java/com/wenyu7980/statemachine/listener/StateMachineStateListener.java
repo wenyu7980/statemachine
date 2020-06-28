@@ -39,11 +39,11 @@ public interface StateMachineStateListener<T, S extends StateContainer, E> {
     S state();
 
     /**
-     * 严格模式，无论状态是否变化都会执行
+     * 严格模式，只有状态变化才会执行
      * @return
      */
     default boolean strict() {
-        return false;
+        return true;
     }
 
     /**

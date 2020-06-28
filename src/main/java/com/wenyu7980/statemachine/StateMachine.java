@@ -201,8 +201,8 @@ public class StateMachine<T, S extends StateContainer, E> {
         // 离开状态
         this.stateListeners.stream()
                 .filter(listener -> listener.exit() && listener.state()
-                        .match(state) && (!Objects.equals(to, state) || listener
-                        .strict()))
+                        .match(state) && (!Objects.equals(to, state)
+                        || !listener.strict()))
                 .forEach(listener -> listener.listener(t, event));
         // 事件触发后
         this.eventListeners.stream()
@@ -213,7 +213,7 @@ public class StateMachine<T, S extends StateContainer, E> {
         this.stateListeners.stream()
                 .filter(listener -> (!listener.exit()) && listener.state()
                         .match(target) && (!Objects.equals(state, target)
-                        || listener.strict()))
+                        || !listener.strict()))
                 .forEach(listener -> listener.listener(t, event));
         // 状态迁移
         this.transformListeners.stream()
