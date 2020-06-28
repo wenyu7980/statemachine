@@ -39,6 +39,14 @@ public interface StateMachineStateListener<T, S extends StateContainer, E> {
     S state();
 
     /**
+     * 严格模式，无论状态是否变化都会执行
+     * @return
+     */
+    default boolean strict() {
+        return false;
+    }
+
+    /**
      * 状态变化监听
      * @param t 状态数据
      * @param e 事件

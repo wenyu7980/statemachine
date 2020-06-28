@@ -196,32 +196,30 @@ public class StateMachine<T, S extends StateContainer, E> {
         }
         // 目标状态
         final S to = matches.get(0).target;
-        if (!Objects.equals(state, to)) {
-            // 离开状态
-            this.stateListeners.stream()
-                    .filter(listener -> listener.exit() && listener.state()
-                            .match(state))
-                    .forEach(listener -> listener.listener(t, event));
-        }
         // 设定状态
         final S target = this.stateFunction.apply(t, to);
+        // 离开状态
+        this.stateListeners.stream()
+                .filter(listener -> listener.exit() && listener.state()
+                        .match(state) && (!Objects.equals(to, state) || listener
+                        .strict()))
+                .forEach(listener -> listener.listener(t, event));
         // 事件触发后
         this.eventListeners.stream()
                 .filter(listener -> listener.post() && Objects
                         .equals(listener.event(), event))
                 .forEach(listener -> listener.listener(t, state, context));
+        // 进入状态
+        this.stateListeners.stream()
+                .filter(listener -> (!listener.exit()) && listener.state()
+                        .match(target) && (!Objects.equals(state, target)
+                        || listener.strict()))
+                .forEach(listener -> listener.listener(t, event));
         // 状态迁移
         this.transformListeners.stream()
                 .filter(listener -> state.match(listener.source()) && target
                         .match(listener.target()))
                 .forEach(listener -> listener.listener(t, event));
-        // 进入状态
-        if (!Objects.equals(state, target)) {
-            this.stateListeners.stream()
-                    .filter(listener -> (!listener.exit()) && listener.state()
-                            .match(target))
-                    .forEach(listener -> listener.listener(t, event));
-        }
         // 状态机结束
         this.listeners.stream().filter(listener -> !listener.start()).forEach(
                 listener -> listener.listener(t, state, event, context));

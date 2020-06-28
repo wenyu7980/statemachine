@@ -16,7 +16,7 @@
 <dependency>
     <groupId>com.wenyu7980</groupId>
     <artifactId>statemachine</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 ### 状态机库结构
@@ -31,11 +31,11 @@
 
 + 状态机监听（开始）
 + 事件监听（前）
-+ 迁移路径匹配
-+ 状态变化监听（离开）
 + 状态设定
++ 状态变化监听（离开）
 + 事件监听（后）
 + 状态变化监听（进入）
++ 迁移路径匹配
 + 状态机监听（结束）
 
 
