@@ -33,10 +33,11 @@ public interface StateMachineEventListener<T, S extends StateContainer, E> {
     boolean post();
 
     /**
-     * 被监听的事件
+     * 判断
+     * @param event
      * @return
      */
-    E event();
+    boolean compare(E event);
 
     /**
      * 监听

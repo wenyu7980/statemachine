@@ -33,10 +33,11 @@ public interface StateMachineStateListener<T, S extends StateContainer, E> {
     boolean exit();
 
     /**
-     * 被监听的状态
+     * 状态判断
+     * @param state
      * @return
      */
-    S state();
+    boolean compare(S state);
 
     /**
      * 严格模式，只有状态变化才会执行

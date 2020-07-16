@@ -180,8 +180,7 @@ public class StateMachine<T, S extends StateContainer, E> {
                 listener -> listener.listener(t, state, event, context));
         // 事件触发前准备
         this.eventListeners.stream()
-                .filter(listener -> !listener.post() && Objects
-                        .equals(listener.event(), event))
+                .filter(listener -> !listener.post() && listener.compare(event))
                 .forEach(listener -> listener.listener(t, state, context));
         // 状态迁移路径匹配
         final List<MachineContainer<T, S, E>> matches = this.machineContainers
@@ -200,25 +199,23 @@ public class StateMachine<T, S extends StateContainer, E> {
         final S target = this.stateFunction.apply(t, to);
         // 事件触发后
         this.eventListeners.stream()
-                .filter(listener -> listener.post() && Objects
-                        .equals(listener.event(), event))
+                .filter(listener -> listener.post() && listener.compare(event))
                 .forEach(listener -> listener.listener(t, state, context));
         // 离开状态
         this.stateListeners.stream()
-                .filter(listener -> listener.exit() && listener.state()
-                        .match(state) && (!Objects.equals(to, state)
-                        || !listener.strict()))
+                .filter(listener -> listener.exit() && listener.compare(state)
+                        && (!Objects.equals(to, state) || !listener.strict()))
                 .forEach(listener -> listener.listener(t, event));
         // 进入状态
         this.stateListeners.stream()
-                .filter(listener -> (!listener.exit()) && listener.state()
-                        .match(target) && (!Objects.equals(state, target)
+                .filter(listener -> (!listener.exit()) && listener
+                        .compare(target) && (!Objects.equals(state, target)
                         || !listener.strict()))
                 .forEach(listener -> listener.listener(t, event));
         // 状态迁移
         this.transformListeners.stream()
-                .filter(listener -> state.match(listener.source()) && target
-                        .match(listener.target()))
+                .filter(listener -> listener.source(state) && listener
+                        .target(target))
                 .forEach(listener -> listener.listener(t, event));
         // 状态机结束
         this.listeners.stream().filter(listener -> !listener.start()).forEach(

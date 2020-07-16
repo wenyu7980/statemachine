@@ -99,32 +99,32 @@ public class StateMachineTest {
         StateMachineEventListener<Data, State, Event> preEvent = Mockito
                 .mock(StateMachineEventListener.class);
         when(preEvent.post()).thenReturn(false);
-        when(preEvent.event()).thenReturn(Event.E1);
+        when(preEvent.compare(Event.E1)).thenReturn(true);
         stateMachine.addEventListener(preEvent);
         // 状态变化监听,离开状态
         StateMachineStateListener<Data, State, Event> exitState = Mockito
                 .mock(StateMachineStateListener.class);
         when(exitState.exit()).thenReturn(true);
-        when(exitState.state()).thenReturn(State.S1);
+        when(exitState.compare(State.S1)).thenReturn(true);
         when(exitState.strict()).thenReturn(true);
         stateMachine.addStateListener(exitState);
         // 事件后监听
         StateMachineEventListener<Data, State, Event> postEvent = Mockito
                 .mock(StateMachineEventListener.class);
         when(postEvent.post()).thenReturn(true);
-        when(postEvent.event()).thenReturn(Event.E1);
+        when(postEvent.compare(Event.E1)).thenReturn(true);
         stateMachine.addEventListener(postEvent);
         // 迁移监听
         StateMachineTransformListener<Data, State, Event> transformListener = Mockito
                 .mock(StateMachineTransformListener.class);
-        when(transformListener.source()).thenReturn(State.S1);
-        when(transformListener.target()).thenReturn(State.S2);
+        when(transformListener.source(State.S1)).thenReturn(true);
+        when(transformListener.target(State.S2)).thenReturn(true);
         stateMachine.addTransformListener(transformListener);
         // 状态变化监听,进入状态
         StateMachineStateListener<Data, State, Event> enterState = Mockito
                 .mock(StateMachineStateListener.class);
         when(enterState.exit()).thenReturn(false);
-        when(enterState.state()).thenReturn(State.S2);
+        when(enterState.compare(State.S2)).thenReturn(true);
         when(enterState.strict()).thenReturn(true);
         stateMachine.addStateListener(enterState);
         // 状态机后监听
@@ -166,32 +166,32 @@ public class StateMachineTest {
         StateMachineEventListener<Data, State, Event> preEvent = Mockito
                 .mock(StateMachineEventListener.class);
         when(preEvent.post()).thenReturn(false);
-        when(preEvent.event()).thenReturn(Event.E1);
+        when(preEvent.compare(Event.E1)).thenReturn(true);
         stateMachine.addEventListener(preEvent);
         // 状态变化监听,离开状态
         StateMachineStateListener<Data, State, Event> exitState = Mockito
                 .mock(StateMachineStateListener.class);
         when(exitState.exit()).thenReturn(true);
-        when(exitState.state()).thenReturn(State.S1);
+        when(exitState.compare(State.S1)).thenReturn(true);
         when(exitState.strict()).thenReturn(false);
         stateMachine.addStateListener(exitState);
         // 事件后监听
         StateMachineEventListener<Data, State, Event> postEvent = Mockito
                 .mock(StateMachineEventListener.class);
         when(postEvent.post()).thenReturn(true);
-        when(postEvent.event()).thenReturn(Event.E1);
+        when(postEvent.compare(Event.E1)).thenReturn(true);
         stateMachine.addEventListener(postEvent);
         // 迁移监听
         StateMachineTransformListener<Data, State, Event> transformListener = Mockito
                 .mock(StateMachineTransformListener.class);
-        when(transformListener.source()).thenReturn(State.S1);
-        when(transformListener.target()).thenReturn(State.S1);
+        when(transformListener.source(State.S1)).thenReturn(true);
+        when(transformListener.target(State.S1)).thenReturn(true);
         stateMachine.addTransformListener(transformListener);
         // 状态变化监听,进入状态
         StateMachineStateListener<Data, State, Event> enterState = Mockito
                 .mock(StateMachineStateListener.class);
         when(enterState.exit()).thenReturn(false);
-        when(enterState.state()).thenReturn(State.S1);
+        when(enterState.compare(State.S1)).thenReturn(true);
         when(enterState.strict()).thenReturn(false);
         stateMachine.addStateListener(enterState);
         // 状态机后监听
@@ -233,32 +233,32 @@ public class StateMachineTest {
         StateMachineEventListener<Data, State, Event> preEvent = Mockito
                 .mock(StateMachineEventListener.class);
         when(preEvent.post()).thenReturn(false);
-        when(preEvent.event()).thenReturn(Event.E1);
+        when(preEvent.compare(Event.E1)).thenReturn(true);
         stateMachine.addEventListener(preEvent);
         // 状态变化监听,离开状态
         StateMachineStateListener<Data, State, Event> exitState = Mockito
                 .mock(StateMachineStateListener.class);
         when(exitState.exit()).thenReturn(true);
-        when(exitState.state()).thenReturn(State.S1);
+        when(exitState.compare(State.S1)).thenReturn(true);
         when(exitState.strict()).thenReturn(true);
         stateMachine.addStateListener(exitState);
         // 事件后监听
         StateMachineEventListener<Data, State, Event> postEvent = Mockito
                 .mock(StateMachineEventListener.class);
         when(postEvent.post()).thenReturn(true);
-        when(postEvent.event()).thenReturn(Event.E1);
+        when(postEvent.compare(Event.E1)).thenReturn(true);
         stateMachine.addEventListener(postEvent);
         // 迁移监听
         StateMachineTransformListener<Data, State, Event> transformListener = Mockito
                 .mock(StateMachineTransformListener.class);
-        when(transformListener.source()).thenReturn(State.S1);
-        when(transformListener.target()).thenReturn(State.S1);
+        when(transformListener.source(State.S1)).thenReturn(true);
+        when(transformListener.target(State.S1)).thenReturn(true);
         stateMachine.addTransformListener(transformListener);
         // 状态变化监听,进入状态
         StateMachineStateListener<Data, State, Event> enterState = Mockito
                 .mock(StateMachineStateListener.class);
         when(enterState.exit()).thenReturn(false);
-        when(enterState.state()).thenReturn(State.S1);
+        when(enterState.compare(State.S1)).thenReturn(true);
         when(enterState.strict()).thenReturn(true);
         stateMachine.addStateListener(enterState);
         // 状态机后监听

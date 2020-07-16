@@ -30,13 +30,13 @@ public interface StateMachineTransformListener<T, S extends StateContainer, E> {
      * 源状态
      * @return
      */
-    S source();
+    boolean source(S state);
 
     /**
      * 目标状态
      * @return
      */
-    S target();
+    boolean target(S state);
 
     /**
      * 迁移监听
