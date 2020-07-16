@@ -46,8 +46,9 @@ public interface StateMachineEventListener<T, S extends StateContainer, E> {
      *          如果isPost为true,事件触发后数据
      *          数据中的状态字段可能发生变更
      * @param s 状态：一直为源状态
+     * @param e 事件
      * @param context 事件数据
      */
-    void listener(final T t, final S s, final Object context);
+    void listener(final T t, final S s, E e, final Object context);
 
 }

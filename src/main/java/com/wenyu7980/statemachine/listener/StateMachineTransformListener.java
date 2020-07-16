@@ -41,7 +41,8 @@ public interface StateMachineTransformListener<T, S extends StateContainer, E> {
     /**
      * 迁移监听
      * @param t 状态数据
+     * @param s 状态：一直为源状态
      * @param e 事件
      */
-    void listener(final T t, final E e);
+    void listener(final T t, S s, final E e);
 }

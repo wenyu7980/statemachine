@@ -138,11 +138,11 @@ public class StateMachineTest {
         InOrder inOrder = inOrder(preListener, preEvent, exitState, postEvent,
                 enterState, transformListener, postListener);
         inOrder.verify(preListener).listener(data, State.S1, Event.E1, context);
-        inOrder.verify(preEvent).listener(data, State.S1, context);
-        inOrder.verify(postEvent).listener(data, State.S1, context);
-        inOrder.verify(exitState).listener(data, Event.E1);
-        inOrder.verify(enterState).listener(data, Event.E1);
-        inOrder.verify(transformListener).listener(data, Event.E1);
+        inOrder.verify(preEvent).listener(data, State.S1, Event.E1, context);
+        inOrder.verify(postEvent).listener(data, State.S1, Event.E1, context);
+        inOrder.verify(exitState).listener(data, State.S1, Event.E1);
+        inOrder.verify(enterState).listener(data, State.S1, Event.E1);
+        inOrder.verify(transformListener).listener(data, State.S1, Event.E1);
         inOrder.verify(postListener)
                 .listener(data, State.S1, Event.E1, context);
     }
@@ -205,11 +205,11 @@ public class StateMachineTest {
         InOrder inOrder = inOrder(preListener, preEvent, exitState, postEvent,
                 enterState, transformListener, postListener);
         inOrder.verify(preListener).listener(data, State.S1, Event.E1, context);
-        inOrder.verify(preEvent).listener(data, State.S1, context);
-        inOrder.verify(postEvent).listener(data, State.S1, context);
-        inOrder.verify(exitState).listener(data, Event.E1);
-        inOrder.verify(enterState).listener(data, Event.E1);
-        inOrder.verify(transformListener).listener(data, Event.E1);
+        inOrder.verify(preEvent).listener(data, State.S1, Event.E1, context);
+        inOrder.verify(postEvent).listener(data, State.S1, Event.E1, context);
+        inOrder.verify(exitState).listener(data, State.S1, Event.E1);
+        inOrder.verify(enterState).listener(data, State.S1, Event.E1);
+        inOrder.verify(transformListener).listener(data, State.S1, Event.E1);
         inOrder.verify(postListener)
                 .listener(data, State.S1, Event.E1, context);
     }
@@ -272,11 +272,11 @@ public class StateMachineTest {
         InOrder inOrder = inOrder(preListener, preEvent, exitState, postEvent,
                 enterState, transformListener, postListener);
         inOrder.verify(preListener).listener(data, State.S1, Event.E1, context);
-        inOrder.verify(preEvent).listener(data, State.S1, context);
-        inOrder.verify(postEvent).listener(data, State.S1, context);
-        inOrder.verify(exitState, times(0)).listener(data, Event.E1);
-        inOrder.verify(enterState, times(0)).listener(data, Event.E1);
-        inOrder.verify(transformListener).listener(data, Event.E1);
+        inOrder.verify(preEvent).listener(data, State.S1, Event.E1, context);
+        inOrder.verify(postEvent).listener(data, State.S1, Event.E1, context);
+        inOrder.verify(exitState, times(0)).listener(data, State.S1, Event.E1);
+        inOrder.verify(enterState, times(0)).listener(data, State.S1, Event.E1);
+        inOrder.verify(transformListener).listener(data, State.S1, Event.E1);
         inOrder.verify(postListener)
                 .listener(data, State.S1, Event.E1, context);
     }
