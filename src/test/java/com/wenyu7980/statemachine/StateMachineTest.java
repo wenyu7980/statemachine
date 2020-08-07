@@ -22,45 +22,45 @@ public class StateMachineTest {
     @Test(expected = RuntimeException.class)
     public void testNotFoundException() {
         StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
-                "stateMachine", Data::setState,
+                "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
-        stateMachine.sendEvent(new Data(), State.S1, Event.E1, null);
+        stateMachine.sendEvent(new Data(State.S1), Event.E1, null);
     }
 
     @Test(expected = StateMachineTooManyException.class)
     public void testTooManyException() {
         StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
-                "stateMachine", Data::setState,
+                "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
         stateMachine
                 .addStateMachineTransform(State.S1, Event.E1, State.S2, null);
         stateMachine
                 .addStateMachineTransform(State.S1, Event.E1, State.S2, null);
-        stateMachine.sendEvent(new Data(), State.S1, Event.E1, null);
+        stateMachine.sendEvent(new Data(State.S1), Event.E1, null);
     }
 
     @Test
     public void testSetState() {
         StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
-                "stateMachine", Data::setState,
+                "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
         stateMachine
                 .addStateMachineTransform(State.S1, Event.E1, State.S2, null);
-        Data data = new Data();
-        stateMachine.sendEvent(data, State.S1, Event.E1, null);
+        Data data = new Data(State.S1);
+        stateMachine.sendEvent(data, Event.E1, null);
         Assert.assertEquals(State.S2, data.getState());
     }
 
     @Test
     public void testGuard() {
         StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
-                "stateMachine", Data::setState,
+                "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
-        Data data = new Data();
+        Data data = new Data(State.S1);
         // guard mock
         StateMachineGuard<Data, State, Event> guard1 = Mockito
                 .mock(StateMachineGuard.class);
@@ -73,20 +73,21 @@ public class StateMachineTest {
                 .addStateMachineTransform(State.S1, Event.E1, State.S2, guard1);
         stateMachine
                 .addStateMachineTransform(State.S1, Event.E1, State.S3, guard2);
-        Assert.assertEquals(State.S2,
-                stateMachine.sendEvent(data, State.S1, Event.E1, null));
-        Assert.assertEquals(State.S3,
-                stateMachine.sendEvent(data, State.S1, Event.E1, "context"));
+        stateMachine.sendEvent(data, Event.E1, null);
+        Assert.assertEquals(State.S2, data.getState());
+        data.setState(State.S1);
+        stateMachine.sendEvent(data, Event.E1, "context");
+        Assert.assertEquals(State.S3, data.getState());
 
     }
 
     @Test
     public void testListener() {
         StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
-                "stateMachine", Data::setState,
+                "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
-        Data data = new Data();
+        Data data = new Data(State.S1);
         String context = "test";
         stateMachine
                 .addStateMachineTransform(State.S1, Event.E1, State.S2, null);
@@ -133,7 +134,7 @@ public class StateMachineTest {
         when(postListener.start()).thenReturn(false);
         stateMachine.addListener(postListener);
         // 状态迁移
-        stateMachine.sendEvent(data, State.S1, Event.E1, context);
+        stateMachine.sendEvent(data, Event.E1, context);
         // 确认调用
         InOrder inOrder = inOrder(preListener, preEvent, exitState, postEvent,
                 enterState, transformListener, postListener);
@@ -150,10 +151,10 @@ public class StateMachineTest {
     @Test
     public void testListenerStrict() {
         StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
-                "stateMachine", Data::setState,
+                "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
-        Data data = new Data();
+        Data data = new Data(State.S1);
         String context = "test";
         stateMachine
                 .addStateMachineTransform(State.S1, Event.E1, State.S1, null);
@@ -200,7 +201,7 @@ public class StateMachineTest {
         when(postListener.start()).thenReturn(false);
         stateMachine.addListener(postListener);
         // 状态迁移
-        stateMachine.sendEvent(data, State.S1, Event.E1, context);
+        stateMachine.sendEvent(data, Event.E1, context);
         // 确认调用
         InOrder inOrder = inOrder(preListener, preEvent, exitState, postEvent,
                 enterState, transformListener, postListener);
@@ -217,10 +218,10 @@ public class StateMachineTest {
     @Test
     public void testListenerStrict2NoInvoked() {
         StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
-                "stateMachine", Data::setState,
+                "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
-        Data data = new Data();
+        Data data = new Data(State.S1);
         String context = "test";
         stateMachine
                 .addStateMachineTransform(State.S1, Event.E1, State.S1, null);
@@ -267,7 +268,7 @@ public class StateMachineTest {
         when(postListener.start()).thenReturn(false);
         stateMachine.addListener(postListener);
         // 状态迁移
-        stateMachine.sendEvent(data, State.S1, Event.E1, context);
+        stateMachine.sendEvent(data, Event.E1, context);
         // 确认调用
         InOrder inOrder = inOrder(preListener, preEvent, exitState, postEvent,
                 enterState, transformListener, postListener);
