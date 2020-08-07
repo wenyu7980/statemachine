@@ -8,12 +8,15 @@ package com.wenyu7980.statemachine;
 public class Data {
     private State state;
 
+    public Data(State state) {
+        this.state = state;
+    }
+
     public State getState() {
         return state;
     }
 
-    public State setState(State state) {
+    public void setState(State state) {
         this.state = state;
-        return this.state;
     }
 }

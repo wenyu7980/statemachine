@@ -16,7 +16,7 @@
 <dependency>
     <groupId>com.wenyu7980</groupId>
     <artifactId>statemachine</artifactId>
-    <version>2.0.0</version>
+    <version>{version}</version>
 </dependency>
 ```
 ### 状态机库结构

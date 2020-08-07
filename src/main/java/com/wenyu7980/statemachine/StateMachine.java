@@ -24,7 +24,8 @@ import com.wenyu7980.statemachine.listener.StateMachineStateListener;
 import com.wenyu7980.statemachine.listener.StateMachineTransformListener;
 
 import java.util.*;
-import java.util.function.BiFunction;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +38,9 @@ public class StateMachine<T, S extends StateContainer, E> {
     /** 状态机列表 */
     private List<MachineContainer<T, S, E>> machineContainers = new ArrayList<>();
     /** 在状态数据中设定状态 */
-    private final BiFunction<T, S, S> stateFunction;
+    private final BiConsumer<T, S> setState;
+    /** 在状态数据中设定状态 */
+    private final Function<T, S> getState;
     /** 状态迁移不存在异常 */
     private final StateMachineNotFoundSupplier<T, S, E, RuntimeException> notFoundException;
     /** 事件监听 */
@@ -52,12 +55,15 @@ public class StateMachine<T, S extends StateContainer, E> {
     /**
      *
      * @param name
-     * @param stateFunction
+     * @param getState
+     * @param setState
      */
-    public StateMachine(String name, BiFunction<T, S, S> stateFunction,
+    public StateMachine(String name, Function<T, S> getState,
+            BiConsumer<T, S> setState,
             StateMachineNotFoundSupplier<T, S, E, RuntimeException> notFoundException) {
         this.name = name;
-        this.stateFunction = stateFunction;
+        this.setState = setState;
+        this.getState = getState;
         this.notFoundException = notFoundException;
     }
 
@@ -168,13 +174,11 @@ public class StateMachine<T, S extends StateContainer, E> {
     /**
      * 触发事件
      * @param t
-     * @param state
      * @param event
      * @param context
-     * @return
      */
-    public S sendEvent(final T t, final S state, final E event,
-            final Object context) {
+    public void sendEvent(final T t, final E event, final Object context) {
+        final S state = getState.apply(t);
         // 状态机开始
         this.listeners.stream().filter(StateMachineListener::start).forEach(
                 listener -> listener.listener(t, state, event, context));
@@ -197,7 +201,8 @@ public class StateMachine<T, S extends StateContainer, E> {
         // 目标状态
         final S to = matches.get(0).target;
         // 设定状态
-        final S target = this.stateFunction.apply(t, to);
+        this.setState.accept(t, to);
+        final S target = this.getState.apply(t);
         // 事件触发后
         this.eventListeners.stream()
                 .filter(listener -> listener.post() && listener.compare(event))
@@ -211,8 +216,9 @@ public class StateMachine<T, S extends StateContainer, E> {
         // 进入状态
         this.stateListeners.stream()
                 .filter(listener -> (!listener.exit()) && listener
-                        .compare(target) && (!Objects.equals(state, target)
-                        || !listener.strict()))
+                        .compare(getState.apply(t)) && (
+                        !Objects.equals(state, getState.apply(t)) || !listener
+                                .strict()))
                 .forEach(listener -> listener.listener(t, state, event));
         // 状态迁移
         this.transformListeners.stream()
@@ -222,7 +228,6 @@ public class StateMachine<T, S extends StateContainer, E> {
         // 状态机结束
         this.listeners.stream().filter(listener -> !listener.start()).forEach(
                 listener -> listener.listener(t, state, event, context));
-        return target;
     }
 
     /**
