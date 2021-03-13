@@ -1,6 +1,6 @@
 package com.wenyu7980.statemachine.triple;
 
-import com.wenyu7980.statemachine.StateMachine;
+import com.wenyu7980.statemachine.impl.AbstractStateMachine;
 import com.wenyu7980.statemachine.listener.StateMachineStateListener;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,11 +10,11 @@ import java.util.Objects;
 /**
  * @author wenyu
  */
-public class StateMachineTripleTest {
+public class AbstractStateMachineTripleTest {
 
     @Test
     public void testTriple() {
-        final StateMachine<Data, StateTriple, String> stateMachine = new StateMachine<>(
+        final AbstractStateMachine<Data, StateTriple, String> stateMachine = new AbstractStateMachine<>(
                 "Triple",
                 (d) -> new StateTriple(d.getS1(), d.getS2(), d.getS3()),
                 (d, s) -> {

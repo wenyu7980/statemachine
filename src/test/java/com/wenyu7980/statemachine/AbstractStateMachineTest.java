@@ -2,6 +2,7 @@ package com.wenyu7980.statemachine;
 
 import com.wenyu7980.statemachine.exception.StateMachineTooManyException;
 import com.wenyu7980.statemachine.guard.StateMachineGuard;
+import com.wenyu7980.statemachine.impl.AbstractStateMachine;
 import com.wenyu7980.statemachine.listener.StateMachineEventListener;
 import com.wenyu7980.statemachine.listener.StateMachineListener;
 import com.wenyu7980.statemachine.listener.StateMachineStateListener;
@@ -18,10 +19,10 @@ import static org.mockito.Mockito.*;
  * @author:wenyu
  * @date:2019/12/26
  */
-public class StateMachineTest {
+public class AbstractStateMachineTest {
     @Test(expected = RuntimeException.class)
     public void testNotFoundException() {
-        StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
+        AbstractStateMachine<Data, State, Event> stateMachine = new AbstractStateMachine<>(
                 "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
@@ -30,7 +31,7 @@ public class StateMachineTest {
 
     @Test(expected = StateMachineTooManyException.class)
     public void testTooManyException() {
-        StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
+        AbstractStateMachine<Data, State, Event> stateMachine = new AbstractStateMachine<>(
                 "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
@@ -43,7 +44,7 @@ public class StateMachineTest {
 
     @Test
     public void testSetState() {
-        StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
+        AbstractStateMachine<Data, State, Event> stateMachine = new AbstractStateMachine<>(
                 "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
@@ -56,7 +57,7 @@ public class StateMachineTest {
 
     @Test
     public void testGuard() {
-        StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
+        AbstractStateMachine<Data, State, Event> stateMachine = new AbstractStateMachine<>(
                 "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
@@ -83,7 +84,7 @@ public class StateMachineTest {
 
     @Test
     public void testListener() {
-        StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
+        AbstractStateMachine<Data, State, Event> stateMachine = new AbstractStateMachine<>(
                 "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
@@ -150,7 +151,7 @@ public class StateMachineTest {
 
     @Test
     public void testListenerStrict() {
-        StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
+        AbstractStateMachine<Data, State, Event> stateMachine = new AbstractStateMachine<>(
                 "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
@@ -217,7 +218,7 @@ public class StateMachineTest {
 
     @Test
     public void testListenerStrict2NoInvoked() {
-        StateMachine<Data, State, Event> stateMachine = new StateMachine<>(
+        AbstractStateMachine<Data, State, Event> stateMachine = new AbstractStateMachine<>(
                 "stateMachine", Data::getState, Data::setState,
                 (Data d, State state, Event event) -> new RuntimeException(
                         "不存在"));
