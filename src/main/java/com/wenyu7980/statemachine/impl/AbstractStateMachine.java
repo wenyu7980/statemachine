@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @author:wenyu
  * @date:2019/12/26
  */
-public class AbstractStateMachine<T, S extends StateContainer, E> implements StateMachine<T, S, E> {
+public class AbstractStateMachine<T, S extends StateContainer, E> implements StateMachine<T, E> {
     private String name;
     /** 状态机列表 */
     private List<MachineContainer<T, S, E>> machineContainers = new ArrayList<>();
